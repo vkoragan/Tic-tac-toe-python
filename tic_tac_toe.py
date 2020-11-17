@@ -1,4 +1,3 @@
-# write your code here
 u_in = list(input())  # read the 9 symbol user input
 d = '-'  # storing dash in a variable
 line = '|'  # storing line in a variable
@@ -24,18 +23,7 @@ x_win = 0
 o_win = 0
 n_ele = 3  # number of elements
 
-print(u_in)
-# list of indices for 3 in a row
-# indices_list = [[0, 1, 2],[3,4,5],[6,7,8],
-#                 [0,3,6],[1,4,7],[2,5,8],
-#                 [0,4,8],[2,4,6]]
-
-# making a matrix from the input string
-# matrix = [u_in[0:3], u_in[3:6], u_in[6:9]]
-
-# analyzing the tic tac toe stage
-
-
+# counting the number of X, O and _
 for j in u_in:
     if j == 'X':
         n_x += 1
@@ -44,8 +32,8 @@ for j in u_in:
     else:
         n_u += 1
 
-# to check wins across rows
-for i in range(0, len(u_in), n_ele):
+# checking wins across rows
+for i in range(0, len(u_in), n_ele):    # generic code will work for tic tac toe of any size
     temp_list = list()
     for j in range(i, i + n_ele):
         temp_list.append(u_in[j])
@@ -53,7 +41,6 @@ for i in range(0, len(u_in), n_ele):
         x_win += 1
     elif temp_list == o_list:
         o_win += 1
-
 
 # to check wins across columns
 for i in range(0, n_ele):
@@ -68,14 +55,14 @@ for i in range(0, n_ele):
 # to check wins across diagonals
 for i in range(1):
     temp_list = list()
-    for j in range(i, len(u_in), n_ele + 1):
+    for j in range(i, len(u_in), n_ele + 1):    # diagonal from left to right
         temp_list.append(u_in[j])
     if temp_list == x_list:
         x_win += 1
     elif temp_list == o_list:
         o_win += 1
     temp_list = list()
-    for j in range(len(u_in) - n_ele, 0, -(n_ele - 1)):
+    for j in range(len(u_in) - n_ele, 0, -(n_ele - 1)):     # diagonal from right to left
         temp_list.append(u_in[j])
     if temp_list == x_list:
         x_win += 1
