@@ -5,7 +5,9 @@ x_win = 0
 o_win = 0
 n_ele = 3  # number of elements
 count = 2
+n_u = 9
 move = ['-']
+
 
 def print_pattern(field):   # function for printing the tic tac toe stage
     d = '-'                 # storing dash in a variable
@@ -54,6 +56,7 @@ def winner_check():
         else:
             n_u += 1
 
+
     # checking wins across rows
     for i in range(0, len(u_in), n_ele):    # generic code, will work for tic tac toe of any size
         temp_list = list()
@@ -99,7 +102,7 @@ def the_game():
     global o_win
     global count
     winner_check()
-    if x_win == 1 or o_win == 1:
+    if x_win == 1 or o_win == 1 or count == 11:
         return()
     else:
         if count % 2 == 0:
@@ -122,5 +125,7 @@ the_game()
 
 if x_win == 1:
     print('X wins')
-else:
+elif o_win == 1:
     print('O wins')
+else:
+    print('Draw')
