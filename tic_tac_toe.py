@@ -1,17 +1,11 @@
-# write your code here
-u_in = list(input('Enter cells:'))  # read the 9 symbol user input
-line = '|'  # storing line in a variable
-s = ' '
-n_x = 0  # number of X's
-n_o = 0  # number of O's
-n_u = 0  # number of underscores
+u_in = ['_', '_', '_', '_', '_', '_', '_', '_', '_']
 o_list = list('OOO')
 x_list = list('XXX')
-temp_list = list()
 x_win = 0
 o_win = 0
 n_ele = 3  # number of elements
-
+count = 2
+move = ['-']
 
 def print_pattern(field):   # function for printing the tic tac toe stage
     d = '-'                 # storing dash in a variable
@@ -26,6 +20,8 @@ def print_pattern(field):   # function for printing the tic tac toe stage
 
 
 def verify_coordinates():
+    global move
+    global u_in
     next_move = input('Enter the coordinates:')
     next_move = next_move.strip()
     next_move = next_move.split(' ')
@@ -35,73 +31,96 @@ def verify_coordinates():
     elif 3 < int(next_move[0]) or 3 < int(next_move[1]):
         print('Coordinates should be from 1 to 3!')
         verify_coordinates()
-    elif u_in[3 * (3 - int(next_move[1])) + (int(next_move[0]) - 1)] != '_':
+    elif u_in[-4 + int(next_move[0]) * 3 + int(next_move[1])] != '_':
         print('This cell is occupied! Choose another one!')
         verify_coordinates()
     else:
-        u_in[3 * (3 - int(next_move[1])) + (int(next_move[0]) - 1)] = 'X'
+        u_in[-4 + int(next_move[0]) * 3 + int(next_move[1])] = move[0]
 
-print_pattern(u_in)  # printing the pattern
 
-verify_coordinates()
+def winner_check():
+    global x_win
+    global o_win
+    n_x = 0  # number of X's
+    n_o = 0  # number of O's
+    n_u = 0  # number of underscores
 
-print_pattern(u_in)  # printing the pattern
+    # counting the number of X, O and _
+    for j in u_in:
+        if j == 'X':
+            n_x += 1
+        elif j == 'O':
+            n_o += 1
+        else:
+            n_u += 1
 
-# counting the number of X, O and _
-for j in u_in:
-    if j == 'X':
-        n_x += 1
-    elif j == 'O':
-        n_o += 1
+    # checking wins across rows
+    for i in range(0, len(u_in), n_ele):    # generic code, will work for tic tac toe of any size
+        temp_list = list()
+        for j in range(i, i + n_ele):
+            temp_list.append(u_in[j])
+        if temp_list == x_list:
+            x_win += 1
+        elif temp_list == o_list:
+            o_win += 1
+
+    # to check wins across columns
+    for i in range(0, n_ele):
+        temp_list = list()
+        for j in range(i, len(u_in), 3):
+            temp_list.append(u_in[j])
+        if temp_list == x_list:
+            x_win += 1
+        elif temp_list == o_list:
+            o_win += 1
+
+    # to check wins across diagonals
+    for i in range(1):
+        temp_list = list()
+        for j in range(i, len(u_in), n_ele + 1):    # diagonal from left to right
+            temp_list.append(u_in[j])
+        if temp_list == x_list:
+            x_win += 1
+        elif temp_list == o_list:
+            o_win += 1
+        temp_list = list()
+        for j in range(len(u_in) - n_ele, 0, -(n_ele - 1)):     # diagonal from right to left
+            temp_list.append(u_in[j])
+        if temp_list == x_list:
+            x_win += 1
+        elif temp_list == o_list:
+            o_win += 1
+    return()
+
+
+def the_game():
+    global u_in
+    global x_win
+    global o_win
+    global count
+    winner_check()
+    if x_win == 1 or o_win == 1:
+        return()
     else:
-        n_u += 1
+        if count % 2 == 0:
+            move[0] =  'X'
+            verify_coordinates()
+            print_pattern(u_in)
+            count += 1
+            the_game()
+        else:
+            move[0] = 'O'
+            verify_coordinates()
+            print_pattern(u_in)
+            count += 1
+            the_game()
 
-# checking wins across rows
-for i in range(0, len(u_in), n_ele):    # generic code, will work for tic tac toe of any size
-    temp_list = list()
-    for j in range(i, i + n_ele):
-        temp_list.append(u_in[j])
-    if temp_list == x_list:
-        x_win += 1
-    elif temp_list == o_list:
-        o_win += 1
 
-# to check wins across columns
-for i in range(0, n_ele):
-    temp_list = list()
-    for j in range(i, len(u_in), 3):
-        temp_list.append(u_in[j])
-    if temp_list == x_list:
-        x_win += 1
-    elif temp_list == o_list:
-        o_win += 1
+# printing the empty pattern
+print_pattern("".join(u_in).replace("_", " "))
+the_game()
 
-# to check wins across diagonals
-for i in range(1):
-    temp_list = list()
-    for j in range(i, len(u_in), n_ele + 1):    # diagonal from left to right
-        temp_list.append(u_in[j])
-    if temp_list == x_list:
-        x_win += 1
-    elif temp_list == o_list:
-        o_win += 1
-    temp_list = list()
-    for j in range(len(u_in) - n_ele, 0, -(n_ele - 1)):     # diagonal from right to left
-        temp_list.append(u_in[j])
-    if temp_list == x_list:
-        x_win += 1
-    elif temp_list == o_list:
-        o_win += 1
-
-#print("x win =", x_win, "o win =", o_win, "n underline =", n_u)
-# Printing the results
-#if x_win == 1 and o_win == 1 or abs(n_x - n_o) >= 2:
-#    print("Impossible")
-#elif x_win == 1:
-#    print("X wins")
-#elif o_win == 1:
-#    print("O wins")
-#elif n_u == 0:
-#    print("Draw")
-#else:
-#    print("Game not finished")
+if x_win == 1:
+    print('X wins')
+else:
+    print('O wins')
