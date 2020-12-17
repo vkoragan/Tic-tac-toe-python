@@ -7,7 +7,28 @@ count = 0
 move = ['-']  # variable that holds the current move. X or O
 
 
+def verify_dimension():
+    # function for verifying the dimension entered by user
+    global dimension_board
+    dimension_board = input("Enter no. of rows for the tic tac toe board "
+                            "\n(should not be less than 3): ")
+    dimension_board = dimension_board.strip()
+    dimension_board = list(dimension_board)
+    print(type(dimension_board))
+    if len(dimension_board) >1:
+        print("Enter a single integer character! ")
+        verify_dimension()
+    elif int(dimension_board[0]) < 3:
+        print("Number should not be less than 3!")
+        verify_dimension()
+    else:
+        dimension_board = int(dimension_board[0])
+
+
+
 def generate_board():
+    # function to generate the tic tac toe board and winning patterns
+
     global board
     global o_list
     global x_list
@@ -17,9 +38,10 @@ def generate_board():
     for _ in range(0, dimension_board):
         o_list = o_list + ["O"]
         x_list = x_list + ["X"]
+    return
 
 
-def print_pattern(field):
+def print_board(field):
     # function for printing the tic tac toe stage
     print('_' * (3 + dimension_board * 2))            # print the first dashes line
     for i in range(0, len(field), dimension_board):
@@ -29,6 +51,7 @@ def print_pattern(field):
         temp = temp + ['|']
         print(" ".join(temp).replace("_", " "))
     print('_' * (3 + dimension_board * 2))       # print the bottom dashes line
+    return
 
 
 def verify_coordinates(user):
@@ -38,7 +61,14 @@ def verify_coordinates(user):
     next_move = input(f'Enter the coordinates for user {user}: ')
     next_move = next_move.strip()
     next_move = next_move.split(' ')
-    if next_move[0].isdigit() != 1 or next_move[1].isdigit() != 1:
+
+    # formula for converting rows and columns into list index is
+    # (rows * dimension) + columns - (dimension + 1)
+
+    if len(next_move) > 2 or len(next_move) == 1:
+        print('Enter 2 coordinates separated by space')
+        verify_coordinates(user)
+    elif next_move[0].isdigit() != 1 or next_move[1].isdigit() != 1:
         print('You should enter numbers!')
         verify_coordinates(user)
     elif dimension_board < int(next_move[0]) or dimension_board < int(next_move[1]):
@@ -50,6 +80,8 @@ def verify_coordinates(user):
     else:
         board[int(next_move[0]) * dimension_board + int(next_move[1]) - (dimension_board + 1)] = move[0]
 
+    return
+
 
 def winner_check():
     # function to check if there's a winner or
@@ -57,7 +89,7 @@ def winner_check():
     global o_win
 
     # checking wins across rows
-    for i in range(0, len(board), dimension_board):    # generic code, will work for tic tac toe of any size
+    for i in range(0, len(board), dimension_board):
         temp_list = list()
         for j in range(i, i + dimension_board):
             temp_list.append(board[j])
@@ -92,7 +124,7 @@ def winner_check():
             x_win = True
         elif temp_list == o_list:
             o_win = True
-    return()
+    return
 
 
 def the_game():  # recursive function that executes until there's win or all the cells are filled
@@ -107,26 +139,27 @@ def the_game():  # recursive function that executes until there's win or all the
         if count % 2 == 0 and count != 1:
             move[0] = 'X'
             verify_coordinates(move[0])
-            print_pattern(board)
+            print_board(board)
             count += 1
             the_game()
         else:
             move[0] = 'O'
             verify_coordinates(move[0])
-            print_pattern(board)
+            print_board(board)
             count += 1
             the_game()
 
 
-# printing the empty pattern
-dimension_board = int(input("Enter no. of rows for the tic tac toe board \n("
-                            "should not be less than 3): "))  # dimension of the tic tac toe board
-generate_board()
-print(board)
-print(x_list, o_list)
-print_pattern("".join(board).replace("_", " "))
+
+verify_dimension()  # get the dimension of the board
+
+generate_board()  #
+
+print_board("".join(board).replace("_", " "))
+
 the_game()
 
+# print the status of the game
 if x_win:
     print('X wins')
 elif o_win:
