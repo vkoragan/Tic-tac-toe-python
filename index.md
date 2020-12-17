@@ -1,4 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to Tic tac toe game 
+
+This game can accept any board size and let the players play in sequence. The first player is always X
 
 You can use the [editor on GitHub](https://github.com/vkoragan/Tic-tac-toe-python/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
