@@ -31,27 +31,28 @@ def print_pattern(field):
     print('_' * (3 + dimension_board * 2))       # print the bottom dashes line
 
 
-def verify_coordinates():
+def verify_coordinates(user):
     # function to verify if a cell's availability and assign move
     global move
     global board
-    next_move = input('Enter the coordinates: ')
+    next_move = input(f'Enter the coordinates for user {user}: ')
     next_move = next_move.strip()
     next_move = next_move.split(' ')
     if next_move[0].isdigit() != 1 or next_move[1].isdigit() != 1:
         print('You should enter numbers!')
-        verify_coordinates()
+        verify_coordinates(user)
     elif dimension_board < int(next_move[0]) or dimension_board < int(next_move[1]):
         print(f'Coordinates should be from 1 to {dimension_board}!')
-        verify_coordinates()
-    elif board[int(next_move[0]) * dimension_board + int(next_move[1]) - ( dimension_board + 1)] != '_':
+        verify_coordinates(user)
+    elif board[int(next_move[0]) * dimension_board + int(next_move[1]) - (dimension_board + 1)] != '_':
         print('This cell is occupied! Choose another one!')
-        verify_coordinates()
+        verify_coordinates(user)
     else:
-        board[int(next_move[0]) * dimension_board + int(next_move[1]) - ( dimension_board + 1)] = move[0]
+        board[int(next_move[0]) * dimension_board + int(next_move[1]) - (dimension_board + 1)] = move[0]
 
 
 def winner_check():
+    # function to check if there's a winner or
     global x_win
     global o_win
 
@@ -105,20 +106,21 @@ def the_game():  # recursive function that executes until there's win or all the
     else:
         if count % 2 == 0 and count != 1:
             move[0] = 'X'
-            verify_coordinates()
+            verify_coordinates(move[0])
             print_pattern(board)
             count += 1
             the_game()
         else:
             move[0] = 'O'
-            verify_coordinates()
+            verify_coordinates(move[0])
             print_pattern(board)
             count += 1
             the_game()
 
 
 # printing the empty pattern
-dimension_board = int(input("Enter no. of rows for the tic tac toe board: "))  # dimension of the tic tac toe board
+dimension_board = int(input("Enter no. of rows for the tic tac toe board \n("
+                            "should not be less than 3): "))  # dimension of the tic tac toe board
 generate_board()
 print(board)
 print(x_list, o_list)
