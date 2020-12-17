@@ -1,4 +1,4 @@
 # Tic-tac-toe-python
-A python implementation of the game tic tac toe, which I have done 
-as a part of the course Python beginner level offered by 
-Jetbrains academy.
+This project was initially made for the project Tic Tac Toe for the Track "Python for beginners" on Hyperskill.com
+After finishing the original project I modified the code a bit further and now the program accepts any dimension tic tac toe board and lets players 
+play in a sequence. 
