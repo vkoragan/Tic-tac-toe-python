@@ -11,10 +11,9 @@ def verify_dimension():
     # function for verifying the dimension entered by user
     global dimension_board
     dimension_board = input("Enter no. of rows for the tic tac toe board "
-                            "\n(should not be less than 3): ")
+                            "(should not be less than 3): ")
     dimension_board = dimension_board.strip()
-    dimension_board = list(dimension_board)
-    print(type(dimension_board))
+    dimension_board = dimension_board.split(" ")
     if len(dimension_board) >1:
         print("Enter a single integer character! ")
         verify_dimension()
